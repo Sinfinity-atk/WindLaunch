@@ -10,6 +10,6 @@ A mod that automatically launches wind charges.
 
 [[mods]]
 modId = "windlaunch"
-version = "1.0.1"
+version = "1.0.2"
 displayName = "Wind Launch Mod"
 description = "Automatically launches wind charges."

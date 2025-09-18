@@ -76,7 +76,7 @@ public class WindLaunchMod implements ClientModInitializer {
                 }
             }
             if (windChargeSlot != -1) {
-                client.player.getInventory().selectedSlot = windChargeSlot;
+                client.player.getInventory().setSelectedSlot(windChargeSlot);
 
                 float currentPitch = client.player.getPitch();
                 client.player.setPitch(90);
@@ -89,7 +89,7 @@ public class WindLaunchMod implements ClientModInitializer {
                 client.player.setPitch(currentPitch);
 
                 if (switchToMaceEnabled && maceSlot != -1) {
-                    client.player.getInventory().selectedSlot = maceSlot;
+                    client.player.getInventory().setSelectedSlot(maceSlot);
                 }
 
                 if (autoMoveEnabled) {
