@@ -1,12 +1,6 @@
 # WindLaunch Mod
 
-<p align="center">
-  <a href="https://modrinth.com/mod/windlaunch">
-    <img src="https://img.shields.io/badge/Available%20on-Modrinth-1bd96a?style=for-the-badge&scale=1.5" alt="Available on Modrinth" width="400">
-  </a>
-</p>
-
-# 🚨 Major Announcement: Mod Version Availability 🚨
+# 🚨 Major Announcement: Mod Version Availability
 
 We are excited to share important updates regarding the availability of our mod!
 
