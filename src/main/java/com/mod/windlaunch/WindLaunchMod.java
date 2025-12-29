@@ -12,7 +12,6 @@ import net.minecraft.item.Items;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.Vec3;
 
 public class WindLaunchMod implements ClientModInitializer {
     private static KeyBinding launchKey;
@@ -24,7 +23,6 @@ public class WindLaunchMod implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        // Register key bindings
         launchKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.windlaunch.launch",
                 InputUtil.Type.KEYSYM,
@@ -46,7 +44,6 @@ public class WindLaunchMod implements ClientModInitializer {
                 Category.MISC
         ));
 
-        // Client tick event
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (launchKey.wasPressed()) {
                 launchWindCharge(client);
@@ -68,52 +65,46 @@ public class WindLaunchMod implements ClientModInitializer {
     }
 
     private void launchWindCharge(MinecraftClient client) {
-        if (client.player == null || client.interactionManager == null) return;
+        if (client.player != null) {
+            int windChargeSlot = -1;
+            int maceSlot = -1;
+            for (int i = 0; i < 9; i++) {
+                ItemStack stack = client.player.getInventory().getStack(i);
+                if (stack.getItem() == Items.WIND_CHARGE) {
+                    windChargeSlot = i;
+                } else if (stack.getItem() == Items.MACE) { // Replace 'Items.MACE' with the correct mace item
+                    maceSlot = i;
+                }
+            }
+            if (windChargeSlot != -1) {
+                client.player.getInventory().setSelectedSlot(windChargeSlot);
+				if (windChargeSlot != -1 && client.player.isOnGround()) {
+                float currentPitch = client.player.getPitch();
+                client.player.setPitch(90);
+				
+                client.player.jump();
+				} else {
+				setPriorityMessage("Not On Ground");	
+				}
+                if (client.interactionManager != null) {
+                    client.interactionManager.interactItem(client.player, Hand.MAIN_HAND);
+                }
 
-        // Ground check to prevent flying
-        if (!client.player.isOnGround()) {
-            setPriorityMessage("You can only launch from the ground!");
-            return;
+                client.player.setPitch(currentPitch);
+
+                if (switchToMaceEnabled && maceSlot != -1) {
+                    client.player.getInventory().setSelectedSlot(maceSlot);
+                }
+
+                if (autoMoveEnabled) {
+                    moveOneWindCharge(client, windChargeSlot);
+                }
+
+                checkWindChargeInventory(client);
+            } else {
+                setPriorityMessage("No wind charge found in hotbar");
+            }
         }
-
-        // Find wind charge and mace in hotbar
-        int windChargeSlot = -1;
-        int maceSlot = -1;
-        for (int i = 0; i < 9; i++) {
-            ItemStack stack = client.player.getInventory().getStack(i);
-            if (stack.getItem() == Items.WIND_CHARGE) windChargeSlot = i;
-            else if (stack.getItem() == Items.MACE) maceSlot = i; // replace with correct mace item
-        }
-
-        if (windChargeSlot == -1) {
-            setPriorityMessage("No wind charge found in hotbar");
-            return;
-        }
-
-        // Select wind charge and jump
-        client.player.getInventory().setSelectedSlot(windChargeSlot);
-        float currentPitch = client.player.getPitch();
-        client.player.setPitch(90); // look straight up
-        client.player.jump();       // vertical boost
-        client.interactionManager.interactItem(client.player, Hand.MAIN_HAND);
-        client.player.setPitch(currentPitch); // restore pitch
-
-        // Optional mace switching
-        if (switchToMaceEnabled && maceSlot != -1) {
-            client.player.getInventory().setSelectedSlot(maceSlot);
-        }
-
-        // Auto-move wind charges from inventory to hotbar
-        if (autoMoveEnabled) {
-            moveOneWindCharge(client, windChargeSlot);
-        }
-
-        // Check total inventory
-        checkWindChargeInventory(client);
-
-        // Cap vertical velocity to prevent stacked boosts (optional safety)
-        Vec3 velocity = client.player.getVelocity();
-        client.player.setVelocity(new Vec3(velocity.x, Math.min(velocity.y, 1.0), velocity.z));
     }
 
     private void toggleSwitchToMace(MinecraftClient client) {
@@ -162,7 +153,7 @@ public class WindLaunchMod implements ClientModInitializer {
                     SlotActionType.PICKUP,
                     client.player
             );
-
+            
             if (!client.player.currentScreenHandler.getCursorStack().isEmpty()) {
                 client.interactionManager.clickSlot(
                         client.player.playerScreenHandler.syncId,
