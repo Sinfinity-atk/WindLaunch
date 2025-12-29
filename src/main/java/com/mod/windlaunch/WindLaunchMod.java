@@ -72,7 +72,6 @@ public class WindLaunchMod implements ClientModInitializer {
                 ItemStack stack = client.player.getInventory().getStack(i);
                 if (stack.getItem() == Items.WIND_CHARGE) {
                     windChargeSlot = i;
-					break;
                 } else if (stack.getItem() == Items.MACE) { // Replace 'Items.MACE' with the correct mace item
                     maceSlot = i;
                 }
@@ -94,7 +93,7 @@ public class WindLaunchMod implements ClientModInitializer {
                     client.player.getInventory().setSelectedSlot(maceSlot);
                 }
 
-                if (autoMoveEnabled) {
+                if (autoMoveEnabled && totalWindCharges = 1) {
                     moveOneWindCharge(client, windChargeSlot);
                 }
 				} else {
@@ -126,7 +125,6 @@ public class WindLaunchMod implements ClientModInitializer {
         for (int i = 9; i < 36; i++) {
             if (client.player.getInventory().getStack(i).getItem() == Items.WIND_CHARGE) {
                 inventoryWindChargeSlot = i;
-                break;
             }
         }
 
