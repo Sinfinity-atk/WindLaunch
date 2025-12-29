@@ -77,9 +77,9 @@ public class WindLaunchMod implements ClientModInitializer {
                 }
             }
             if (windChargeSlot != -1) {
-                client.player.getInventory().setSelectedSlot(windChargeSlot);
 				float currentPitch = client.player.getPitch();
 				if (client.player.isOnGround()) {
+				client.player.getInventory().setSelectedSlot(windChargeSlot);
                 client.player.setPitch(90);
 				
                 client.player.jump();
@@ -97,9 +97,9 @@ public class WindLaunchMod implements ClientModInitializer {
                     moveOneWindCharge(client, windChargeSlot);
                 }
 				} else {
-				setPriorityMessage("Not On Ground");
-                checkWindChargeInventory(client);				
+				setPriorityMessage("Not On Ground");				
 				}
+                checkWindChargeInventory(client);
             } else {
                 setPriorityMessage("No wind charge found in hotbar");
             }
