@@ -78,8 +78,8 @@ public class WindLaunchMod implements ClientModInitializer {
             }
             if (windChargeSlot != -1) {
                 client.player.getInventory().setSelectedSlot(windChargeSlot);
+				float currentPitch = client.player.getPitch();
 				if (windChargeSlot != -1 && client.player.isOnGround()) {
-                float currentPitch = client.player.getPitch();
                 client.player.setPitch(90);
 				
                 client.player.jump();
