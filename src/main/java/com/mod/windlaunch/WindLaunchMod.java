@@ -99,7 +99,7 @@ public class WindLaunchMod implements ClientModInitializer {
 						totalWindCharges += stack.getCount();
 					}
 				}
-                if (autoMoveEnabled && totalWindCharges = 1) {
+                if (autoMoveEnabled && totalWindCharges == 1) {
                     moveOneWindCharge(client, windChargeSlot);
                 }
 				} else {
