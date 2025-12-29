@@ -97,10 +97,9 @@ public class WindLaunchMod implements ClientModInitializer {
                     moveOneWindCharge(client, windChargeSlot);
                 }
 				} else {
-				setPriorityMessage("Not On Ground");	
+				setPriorityMessage("Not On Ground");
+                checkWindChargeInventory(client);				
 				}
-                
-                checkWindChargeInventory(client);
             } else {
                 setPriorityMessage("No wind charge found in hotbar");
             }
