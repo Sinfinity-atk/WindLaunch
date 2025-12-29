@@ -12,7 +12,7 @@
   </a>
 </p>
 
-# 🚨 Majors Announcement: Mod Version Availability
+# 🚨 Major Announcement: Mod Version Availability
 
 We are excited to share important updates regarding the availability of our mod!
 
