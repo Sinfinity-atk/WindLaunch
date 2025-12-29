@@ -72,6 +72,7 @@ public class WindLaunchMod implements ClientModInitializer {
                 ItemStack stack = client.player.getInventory().getStack(i);
                 if (stack.getItem() == Items.WIND_CHARGE) {
                     windChargeSlot = i;
+					break;
                 } else if (stack.getItem() == Items.MACE) { // Replace 'Items.MACE' with the correct mace item
                     maceSlot = i;
                 }
@@ -101,7 +102,7 @@ public class WindLaunchMod implements ClientModInitializer {
 				}
                 checkWindChargeInventory(client);
             } else {
-                setPriorityMessage("No wind charge found in hotbar");
+			setPriorityMessage("No wind charge found in hotbar");
             }
         }
     }
