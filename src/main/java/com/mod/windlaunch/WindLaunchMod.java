@@ -92,7 +92,13 @@ public class WindLaunchMod implements ClientModInitializer {
                 if (switchToMaceEnabled && maceSlot != -1) {
                     client.player.getInventory().setSelectedSlot(maceSlot);
                 }
-
+				int totalWindCharges = 0;
+				for (int i = 0; i < 36; i++) {
+					ItemStack stack = client.player.getInventory().getStack(i);
+					if (stack.getItem() == Items.WIND_CHARGE) {
+						totalWindCharges += stack.getCount();
+					}
+				}
                 if (autoMoveEnabled && totalWindCharges = 1) {
                     moveOneWindCharge(client, windChargeSlot);
                 }
