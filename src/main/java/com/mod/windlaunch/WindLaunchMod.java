@@ -19,6 +19,7 @@ public class WindLaunchMod implements ClientModInitializer {
     private static KeyBinding autoMoveKey;
     private boolean switchToMaceEnabled = true;
     private boolean autoMoveEnabled = true;
+    private boolean switchToSwordEnabled = true;
     private String priorityMessage = null;
 
     @Override
@@ -32,6 +33,12 @@ public class WindLaunchMod implements ClientModInitializer {
 
         switchToMaceKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.windlaunch.switchtomace",
+                InputUtil.Type.KEYSYM,
+                InputUtil.UNKNOWN_KEY.getCode(),
+                Category.MISC
+        ));
+        switchToSwordEnabledKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.windlaunch.switchtosword",
                 InputUtil.Type.KEYSYM,
                 InputUtil.UNKNOWN_KEY.getCode(),
                 Category.MISC
@@ -52,7 +59,11 @@ public class WindLaunchMod implements ClientModInitializer {
             while (switchToMaceKey.wasPressed()) {
                 toggleSwitchToMace(client);
             }
-
+            
+            while (switchToSwordEnabledKey.wasPressed()) {
+                toggleSwitchToSword(client);
+            }
+            
             while (autoMoveKey.wasPressed()) {
                 toggleAutoMove(client);
             }
@@ -68,46 +79,52 @@ public class WindLaunchMod implements ClientModInitializer {
         if (client.player != null) {
             int windChargeSlot = -1;
             int maceSlot = -1;
+            int swordSlot = -1;
             for (int i = 0; i < 9; i++) {
                 ItemStack stack = client.player.getInventory().getStack(i);
                 if (stack.getItem() == Items.WIND_CHARGE) {
                     windChargeSlot = i;
                 } else if (stack.getItem() == Items.MACE) { // Replace 'Items.MACE' with the correct mace item
                     maceSlot = i;
+                } else if (stack.getItem() == Items.NETHERITE_SWORD) { // Replace 'Items.NETHERITE_SWORD' with the correct sword item
+                    swordSlot = i;
                 }
             }
             if (windChargeSlot != -1) {
-				float currentPitch = client.player.getPitch();
-				if (client.player.isOnGround()) {
-				client.player.getInventory().setSelectedSlot(windChargeSlot);
+                float currentPitch = client.player.getPitch();
+                if (client.player.isOnGround()) {
+                client.player.getInventory().setSelectedSlot(windChargeSlot);
                 client.player.setPitch(90);
-				
+                
                 client.player.jump();
-				if (client.interactionManager != null) {
+                if (client.interactionManager != null) {
                     client.interactionManager.interactItem(client.player, Hand.MAIN_HAND);
                 }
 
                 client.player.setPitch(currentPitch);
-
+                if (switchToSwordEnabled && swordSlot != -1) {
+                    client.player.getInventory().setSelectedSlot(swordSlot);
+                } else {
                 if (switchToMaceEnabled && maceSlot != -1) {
-                    client.player.getInventory().setSelectedSlot(maceSlot);
+                        client.player.getInventory().setSelectedSlot(maceSlot);
                 }
-				int totalWindCharges = 0;
-				for (int i = 0; i < 36; i++) {
-					ItemStack stack = client.player.getInventory().getStack(i);
-					if (stack.getItem() == Items.WIND_CHARGE) {
-						totalWindCharges += stack.getCount();
-					}
-				}
+                }
+                int totalWindCharges = 0;
+                for (int i = 0; i < 36; i++) {
+                    ItemStack stack = client.player.getInventory().getStack(i);
+                    if (stack.getItem() == Items.WIND_CHARGE) {
+                        totalWindCharges += stack.getCount();
+                    }
+                }
                 if (autoMoveEnabled && totalWindCharges == 3) {
                     moveOneWindCharge(client, windChargeSlot);
                 }
-				} else {
-				setPriorityMessage("Not On Ground");				
-				}
+                } else {
+                setPriorityMessage("Not On Ground");				
+                }
                 checkWindChargeInventory(client);
             } else {
-			setPriorityMessage("No wind charge found in hotbar");
+            setPriorityMessage("No wind charge found in hotbar");
             }
         }
     }
