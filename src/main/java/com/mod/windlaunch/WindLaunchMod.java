@@ -16,6 +16,7 @@ import net.minecraft.util.Hand;
 public class WindLaunchMod implements ClientModInitializer {
     private static KeyBinding launchKey;
     private static KeyBinding switchToMaceKey;
+    private static KeyBinding switchToSwordEnabledKey;
     private static KeyBinding autoMoveKey;
     private boolean switchToMaceEnabled = true;
     private boolean autoMoveEnabled = true;
