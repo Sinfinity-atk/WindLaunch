@@ -135,6 +135,12 @@ public class WindLaunchMod implements ClientModInitializer {
         String message = switchToMaceEnabled ? "Mace switching enabled" : "Mace switching disabled";
         sendActionBarMessage(client, message);
     }
+    
+    private void toggleSwitchToSword(MinecraftClient client) {
+        switchToSwordEnabled = !switchToSwordEnabled;
+        String message = switchToSwordEnabled ? "Sword switching enabled" : "Sword switching disabled";
+        sendActionBarMessage(client, message);
+    }
 
     private void toggleAutoMove(MinecraftClient client) {
         autoMoveEnabled = !autoMoveEnabled;
